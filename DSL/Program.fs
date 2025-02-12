@@ -63,6 +63,7 @@ let song =
     }
 
 // Create the WAV file from the song
-createWav "mario_bros_theme.wav" song
-playSound "mario_bros_theme.wav"
+let songName = "mario_bros_theme.wav"
+createWav songName song
+playSound songName
 
