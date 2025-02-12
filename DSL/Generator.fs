@@ -41,6 +41,29 @@ let generateSineWave (frequency: float) (duration: float) =
 
         int16 sample // Convert to 16-bit integer
     )
+    
+// Create a reverberation filter tacking int16 array and returning int16 array
+let reverberationFilter (wave: int16 list) =
+    let delay = 0.05
+    let decay = 0.01
+
+    let delaySamples = int (delay * float sampleRate)
+    let decayFactor = float decay
+
+    let rec applyReverberation (wave: int16 array) (delayedWave: int16 array) (index: int) =
+        if index >= wave.Length then wave
+        else            
+            let delayedSample = delayedWave.[index % delayedWave.Length]
+            let sample = wave.[index] + int16 (float delayedSample * decayFactor)
+            
+            wave.[index] <- sample
+            delayedWave.[index % delayedWave.Length] <- sample
+
+            applyReverberation wave delayedWave (index + 1)
+
+    let res = applyReverberation (wave |> Array.ofList) (Array.zeroCreate delaySamples) 0
+    
+    (res |> List.ofArray)
 
 let combineWaves (wave1: int16 list) (wave2: int16 list) =
     List.zip wave1 wave2

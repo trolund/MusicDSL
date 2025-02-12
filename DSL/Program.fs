@@ -1,5 +1,6 @@
 ﻿open DSL.Generator
 open DSL.MusicBuilder
+open DSL.Player
 
 let music = MusicBuilder()
 
@@ -63,3 +64,5 @@ let song =
 
 // Create the WAV file from the song
 createWav "mario_bros_theme.wav" song
+playSound "mario_bros_theme.wav"
+
